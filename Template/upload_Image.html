@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection - Image Result</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+       .box {
+    background: linear-gradient(to bottom right, #f3e7e9, #e3eeff);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+    width: 450px;
+    margin: 20px auto;
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .detect-btn {
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    color: black;
+    border: none;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.4s ease;
+    }
+
+    .detect-btn:hover {
+    background: linear-gradient(135deg, #92fe9d, #00c9ff);
+    transform: scale(1.05);
+    }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 350px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar/Header -->
+<div class="navbar">
+    <div style="font-size: 24px; color: white; font-weight: bold;">
+        AI OBJECT DETECTION
+    </div>
+    <div>
+        <a href="/Mainpage">Home</a>
+        <a href="/About">About</a>
+        <a href="/Contact">Contact</a>
+        <a href="/home">Logout</a>
+    </div>
+</div>
+
+<br><br>
+
+<h1 style="text-align:center;">Upload Images for Detection</h1>
+<br><br>
+<div class="box">
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h3 style="margin-bottom: 20px;">Upload Image</h3>
+      <input type="file" name="image" accept="image/*" required style="padding: 10px; border: 2px solid #ccc; border-radius: 8px; width: 90%; margin-bottom: 20px;">
+      <br><br>
+      <button class="detect-btn" type="submit">🖼️ Detect Image</button>
+  </form>
+</div>
+
+
+<br><br>
+
+{% if image_url %}
+    <h2>Detected Image:</h2>
+    <img src="{{ image_url }}" alt="Detected Image" style="max-width: 90%; border: 2px solid green;">
+{% elif error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<!-- Footer -->
+<div class="footer">
+    &copy; 2025 OBJECT DETECTION AI | ALL RIGHTS RESERVED
+</div>
+
+</body>
+</html>

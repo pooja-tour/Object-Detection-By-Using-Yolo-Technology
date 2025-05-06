@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Object Detection</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: url("{% static 'ODApp/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: black;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .title {
+            font-size: 26px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .navbar .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 100px 20px 50px;
+        }
+
+        .detection-options {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: rgba(227,218,201);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: rgba(89,39,32);
+        }
+
+        h2 {
+            font-size: 24px;
+            color: rgba(89,39,32);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: rgba(188,143,143);
+            margin-bottom: 20px;
+        }
+
+        .detect-btn {
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .detect-btn:hover {
+            background: linear-gradient(to right, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
+
+        .file-upload {
+            margin-top: 15px;
+        }
+
+        .file-upload input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="title">AI OBJECT DETECTION</div>
+        <div class="buttons">
+            <a onclick="location.href='/Mainpage'" class="btn">Home</a>
+            <a onclick="location.href='/About'" class="btn">About</a>
+            <a onclick="location.href='/Contact'" class="btn">Contact</a>
+            <a onclick="location.href='/home'" class="btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Select Object Detection Method</h1>
+        <p>Choose one of the methods below to start object detection.</p>
+
+        <div class="detection-options">
+
+            <!-- Live Detection -->
+            <div class="box">
+                <h2>Live Detection</h2>
+                <p>Use your webcam for real-time object detection.</p>
+                <button class="detect-btn" onclick="startLiveDetection()">Start Live Detection</button>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="box">
+                <form method="POST" enctype="multipart/form-data" action="{% url 'detect_image' %}">
+                    {% csrf_token %}
+                    <h2>Upload Image</h2>
+                    <p>Upload an image to detect objects within it.</p>
+
+                    <button class="detect-btn" type="submit">Detect Image</button>
+                </form>
+            </div>
+
+            <!-- Video Upload -->
+            <div class="box">
+                <form id="videoUploadForm" method="POST" enctype="multipart/form-data" action="{% url 'upload_video' %}">
+                    {% csrf_token %}
+                    <h2>Upload Video</h2>
+                    <p>Upload a video file for object detection.</p>
+                   <!-- <div class="file-upload">
+                        <input type="file" name="video" id="videoInput" accept="video/mp4" required>
+                    </div> -->
+                   <!--  <button class="detect-btn" type="button" onclick="startVideoDetection()">Detect Video</button> -->
+                    <button class="detect-btn" type = "submit">Detect Video</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 OBJECT DETECTION AI | ALL RIGHTS RESERVED
+    </div>
+
+    <script>
+        function startLiveDetection() {
+            window.location.href = "/live_detection/";
+        }
+
+        function startVideoDetection() {
+            let fileInput = document.getElementById('videoInput');
+            if (fileInput.files.length === 0) {
+                alert("Please upload a video before starting detection.");
+            } else {
+                document.getElementById('videoUploadForm').submit();
+            }
+        }
+    </script>
+
+</body>
+</html>
+

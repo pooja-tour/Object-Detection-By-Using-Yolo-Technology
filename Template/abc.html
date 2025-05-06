@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object Detection - Image Result</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        .box {
+            background: rgba(227,218,201);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 50px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar/Header -->
+<div class="navbar">
+    <div style="font-size: 24px; color: white; font-weight: bold;">
+        AI OBJECT DETECTION
+    </div>
+    <div>
+        <a href="/Mainpage">Home</a>
+        <a href="/About">About</a>
+        <a href="/Contact">Contact</a>
+        <a href="/home">Logout</a>
+    </div>
+</div>
+
+<br><br>
+
+<h1 style="text-align:center;">Upload Images for Detection</h1>
+
+<div class="box">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <button type="submit">Detect</button>
+    </form>
+</div>
+
+<br><br>
+
+{% if image_url %}
+    <h2>Detected Image:</h2>
+    <img src="{{ image_url }}" alt="Detected Image" style="max-width: 90%; border: 2px solid green;">
+{% elif error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<!-- Footer -->
+<div class="footer">
+    &copy; 2025 OBJECT DETECTION AI | ALL RIGHTS RESERVED
+</div>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Detection Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            text-align: center;
+            padding: 40px;
+        }
+        video {
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 720px;
+            margin-top: 20px;
+        }
+        .back-btn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .back-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Processed Video Output</h2>
+
+    {% if video_url %}
+        <video controls autoplay muted>
+            <source src="{{ video_url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    {% else %}
+        <p style="color: red;">No video found.</p>
+    {% endif %}
+    <br><br>
+    <button class="back-btn" onclick="window.location.href='/Mainpage'">Back to Dashboard</button>
+
+</body>
+</html>
